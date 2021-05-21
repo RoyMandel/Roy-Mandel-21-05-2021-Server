@@ -80,7 +80,8 @@ namespace Connector
                 // Handle response
                 if (response.IsSuccess)
                 {
-
+                    response.Temperature = serviceResponse.Temperature;
+                    response.WeatherDescription = serviceResponse.WeatherDescription;
                 }
                 else
                 {

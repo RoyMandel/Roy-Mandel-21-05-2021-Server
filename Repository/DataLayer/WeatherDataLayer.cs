@@ -6,6 +6,7 @@ using Repository.Entities.Responses;
 using Repository.Models.AccuWeatherAPI.AutoComplete;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace Repository.DataLayer
@@ -48,7 +49,30 @@ namespace Repository.DataLayer
                 var placeTemperature = await _weatherRepository.GetPlaceTemperatureAsync(request.CityKey).ConfigureAwait(false);
                 if (placeTemperature == null)
                 {
-                    
+                    var currentConditions = await _weatherRepository.GetCurrentConditionsAsync(request.CityKey).ConfigureAwait(false);
+                    if (currentConditions != null)
+                    {
+                        var conditions = currentConditions.FirstOrDefault();
+                        if (conditions != null)
+                        {
+                            #region Save new weather data
+                            var savedData = await _weatherRepository.InsertPlaceWeatherAndData(request.CityKey,
+                                                                                               conditions.WeatherText,
+                                                                                               conditions.Temperature.Metric.Value, 
+                                                                                               request.CityName).ConfigureAwait(false);
+                            if (savedData != null)
+                            {
+                                response.Temperature = savedData.Temperature;
+                                response.WeatherDescription = savedData.WeatherText;
+                                response.Success("GetCurrentWeatherAsync");
+                            }
+                            #endregion
+
+                            // Build Response
+                        }
+                        else { response.Failed("[WeatherDataLayer:GetCurrentWeatherAsync] No items found in currentConditions API result."); }
+                    }
+                    else { response.Failed("[WeatherDataLayer:GetCurrentWeatherAsync] GetCurrentConditionsAsync failed or no data found."); }
                 }
                 else
                 {

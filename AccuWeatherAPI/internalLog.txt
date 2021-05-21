@@ -6,3 +6,11 @@
 2021-05-21 18:17:09.8152 Info Loading assembly: NLog.Web.AspNetCore
 2021-05-21 18:17:09.8742 Info Adding target DatabaseTarget(Name=database)
 2021-05-21 18:17:09.9065 Info Validating config: TargetNames=database, ConfigItems=39, FilePath=C:\Users\Roy\Desktop\Test\AccuWeatherAPI\AccuWeatherAPI\bin\Debug\netcoreapp2.2\nlog.config
+2021-05-21 22:28:13.4439 Info Message Template Auto Format enabled
+2021-05-21 22:28:13.4557 Info Loading assembly: NLog.Web.AspNetCore
+2021-05-21 22:28:13.5421 Info Adding target DatabaseTarget(Name=database)
+2021-05-21 22:28:13.5875 Info Validating config: TargetNames=database, ConfigItems=39, FilePath=C:\Users\Roy\Desktop\Test\AccuWeatherAPI\AccuWeatherAPI\bin\Debug\netcoreapp2.2\nlog.config
+2021-05-21 22:30:23.9178 Info Message Template Auto Format enabled
+2021-05-21 22:30:23.9376 Info Loading assembly: NLog.Web.AspNetCore
+2021-05-21 22:30:24.0690 Info Adding target DatabaseTarget(Name=database)
+2021-05-21 22:30:24.1258 Info Validating config: TargetNames=database, ConfigItems=39, FilePath=C:\Users\Roy\Desktop\Test\AccuWeatherAPI\AccuWeatherAPI\bin\Debug\netcoreapp2.2\nlog.config
