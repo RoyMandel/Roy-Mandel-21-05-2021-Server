@@ -94,5 +94,68 @@ namespace Connector
             }
             return response;
         }
+
+        public async Task<AddToFavoritesResponse> AddToFavoritesAsync(AddToFavoritesRequest request, AddToFavoritesResponse response)
+        {
+            try
+            {
+                // Map request
+                var serviceRequest = _mapper.Map<Repository.Entities.Requests.AddToFavoritesRequest>(request);
+
+                // Map response
+                var serviceResponse = _mapper.Map<Repository.Entities.Responses.AddToFavoritesResponse>(response);
+
+                // Call action
+                serviceResponse = await _weatherWorkflow.AddToFavoritesAsync(serviceRequest, serviceResponse);
+
+                // Merge response logs
+                response.Marge(serviceResponse);
+
+                // Handle response
+                if (response.IsSuccess)
+                {
+                    response.CityKey = serviceResponse.CityKey;
+                    response.CityName = serviceResponse.CityName;
+                }
+                else
+                {
+                    response.Failed("WeatherConnector:AddToFavoritesAsync");
+                }
+            }
+            catch (Exception ex)
+            {
+                response.Failed(ex);
+            }
+            return response;
+        }
+
+        public async Task<DeleteFavoriteResponse> DeleteFavoriteAsync(DeleteFavoriteRequest request, DeleteFavoriteResponse response)
+        {
+            try
+            {
+                // Map request
+                var serviceRequest = _mapper.Map<Repository.Entities.Requests.DeleteFavoriteRequest>(request);
+
+                // Map response
+                var serviceResponse = _mapper.Map<Repository.Entities.Responses.DeleteFavoriteResponse>(response);
+
+                // Call action
+                serviceResponse = await _weatherWorkflow.DeleteFavoriteAsync(serviceRequest, serviceResponse);
+
+                // Merge response logs
+                response.Marge(serviceResponse);
+
+                // Handle response
+                if (!response.IsSuccess)
+                {
+                    response.Failed("WeatherConnector:DeleteFavoriteAsync");
+                }
+            }
+            catch (Exception ex)
+            {
+                response.Failed(ex);
+            }
+            return response;
+        }
     }
 }

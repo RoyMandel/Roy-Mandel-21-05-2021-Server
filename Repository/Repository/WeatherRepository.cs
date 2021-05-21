@@ -19,6 +19,7 @@ namespace Repository.Repository
 {
     public class WeatherRepository : BaseRepository, IWeatherRepository
     {
+        readonly IDbConnection _dbWeather = new SqlConnection("Server=localhost\\SQLEXPRESS;Database=RealcommerceDB;Trusted_Connection=True;MultipleActiveResultSets=True;");
         public WeatherRepository(IOptions<DBConnectionOptions> dbSettings, IOptions<AccuWeatherOptions> accuWeatherOptions)
             : base(dbSettings, accuWeatherOptions)
         {
@@ -53,7 +54,6 @@ namespace Repository.Repository
             PlaceTemperature response = new PlaceTemperature();
             try
             {
-                IDbConnection _dbWeather = new SqlConnection("Server=localhost\\SQLEXPRESS;Database=RealcommerceDB;Trusted_Connection=True;MultipleActiveResultSets=True;");
                 var placeTemperature = await _dbWeather.QueryFirstOrDefaultAsync<PlaceTemperature>("[usp_GetTemperatureForPlace]", new
                 {
                     PlaceID = cityKey
@@ -105,7 +105,6 @@ namespace Repository.Repository
             PlaceTemperatureAndData response = new PlaceTemperatureAndData();
             try
             {
-                IDbConnection _dbWeather = new SqlConnection("Server=localhost\\SQLEXPRESS;Database=RealcommerceDB;Trusted_Connection=True;MultipleActiveResultSets=True;");
                 var placeTemperature = await _dbWeather.QueryFirstOrDefaultAsync<PlaceTemperatureAndData>("[usp_InsertPlaceWeatherAndData]", new
                 {
                     PlaceID = cityKey,
@@ -130,6 +129,53 @@ namespace Repository.Repository
             {
                 Logger.Error("[WeatherRepository:InsertPlaceWeatherAndData] => usp_GetTemperatureForPlace failed", ex);
                 return null;
+            }
+        }
+
+        public async Task<Favorites> AddPlaceToFavorites(string cityKey)
+        {
+            Favorites response = new Favorites();
+            try
+            {
+                var newFavorite = await _dbWeather.QueryFirstOrDefaultAsync<Favorites>("[usp_AddPlaceToFavorites]", new
+                {
+                    PlaceID = cityKey
+                }, commandType: System.Data.CommandType.StoredProcedure);
+
+                if (newFavorite != null)
+                {
+                    response.PlaceID = newFavorite.PlaceID;
+                    response.PlaceName = newFavorite.PlaceName;
+                }
+                else
+                {
+                    response = null;
+                }
+
+                return response;
+            }
+            catch (Exception ex)
+            {
+                Logger.Error("[WeatherRepository] => usp_AddPlaceToFavorites failed", ex);
+                return null;
+            }
+        }
+
+        public async Task<bool> DeleteFromFavorites(string cityKey)
+        {
+            try
+            {
+                bool issucces = await _dbWeather.QueryFirstOrDefaultAsync<bool>("[usp_DeleteFavorite]", new
+                {
+                    PlaceID = cityKey
+                }, commandType: System.Data.CommandType.StoredProcedure);
+
+                return issucces;
+            }
+            catch (Exception ex)
+            {
+                Logger.Error("[WeatherRepository] => usp_DeleteFavorite failed", ex);
+                return false;
             }
         }
     }

@@ -84,5 +84,35 @@ namespace Repository.DataLayer
             catch (Exception ex) { response.Failed(ex); }
             return response;
         }
+
+        public async Task<AddToFavoritesResponse> AddToFavoritesAsync(AddToFavoritesRequest request, AddToFavoritesResponse response)
+        {
+            try
+            {
+                var newFavorite = await _weatherRepository.AddPlaceToFavorites(request.CityKey).ConfigureAwait(false);
+                if (newFavorite != null)
+                {
+                    response.CityKey = newFavorite.PlaceID;
+                    response.CityName = newFavorite.PlaceName;
+                    response.Success("AddToFavoritesAsync");
+                }
+            }
+            catch (Exception ex) { response.Failed(ex); }
+            return response;
+        }
+
+        public async Task<DeleteFavoriteResponse> DeleteFavoriteAsync(DeleteFavoriteRequest request, DeleteFavoriteResponse response)
+        {
+            try
+            {
+                var isSuccess = await _weatherRepository.DeleteFromFavorites(request.CityKey).ConfigureAwait(false);
+                if (isSuccess)
+                {
+                    response.Success("DeleteFavoriteAsync");
+                }
+            }
+            catch (Exception ex) { response.Failed(ex); }
+            return response;
+        }
     }
 }

@@ -65,5 +65,53 @@ namespace AccuWeatherAPI.Controllers
             }
             return response;
         }
+
+        [Route("AddToFavorites")]
+        [HttpPost]
+        public async Task<AddToFavoritesResponse> AddToFavoritesAsync([FromBody] AddToFavoritesRequest request)
+        {
+            var response = new AddToFavoritesResponse();
+            try
+            {
+                response = await _weatherWorkflow.AddToFavoritesAsync(request, response).ConfigureAwait(false);
+                if (response.IsSuccess)
+                {
+                    response.Success("AddToFavoritesAsync");
+                }
+                else
+                {
+                    response.Failed("WeatherController:AddToFavoritesAsync");
+                }
+            }
+            catch (Exception ex)
+            {
+                response.Failed(ex);
+            }
+            return response;
+        }
+
+        [Route("DeleteFavorite")]
+        [HttpPost]
+        public async Task<DeleteFavoriteResponse> DeleteFavoriteAsync([FromBody] DeleteFavoriteRequest request)
+        {
+            var response = new DeleteFavoriteResponse();
+            try
+            {
+                response = await _weatherWorkflow.DeleteFavoriteAsync(request, response).ConfigureAwait(false);
+                if (response.IsSuccess)
+                {
+                    response.Success("DeleteFavoriteAsync");
+                }
+                else
+                {
+                    response.Failed("WeatherController:DeleteFavoriteAsync");
+                }
+            }
+            catch (Exception ex)
+            {
+                response.Failed(ex);
+            }
+            return response;
+        }
     }
 }

@@ -8,5 +8,7 @@ namespace APIFlow.Entities.Interfaces.DataLayer
     {
         Task<SearchResponse> SearchAsync(SearchRequest request, SearchResponse response);
         Task<GetCurrentWeatherResponse> GetCurrentWeatherAsync(GetCurrentWeatherRequest request, GetCurrentWeatherResponse response);
+        Task<AddToFavoritesResponse> AddToFavoritesAsync(AddToFavoritesRequest request, AddToFavoritesResponse response);
+        Task<DeleteFavoriteResponse> DeleteFavoriteAsync(DeleteFavoriteRequest request, DeleteFavoriteResponse response);
     }
 }

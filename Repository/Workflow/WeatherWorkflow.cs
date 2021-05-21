@@ -43,5 +43,33 @@ namespace Repository.Workflow
             catch (Exception ex) { response.Failed(ex); }
             return response;
         }
+
+        public async Task<AddToFavoritesResponse> AddToFavoritesAsync(AddToFavoritesRequest request, AddToFavoritesResponse response)
+        {
+            try
+            {
+                response = await _weatherDataLayer.AddToFavoritesAsync(request, response).ConfigureAwait(false);
+                if (!response.IsSuccess)
+                {
+                    response.Failed("WeatherWorkflow:AddToFavoritesAsync");
+                }
+            }
+            catch (Exception ex) { response.Failed(ex); }
+            return response;
+        }
+
+        public async Task<DeleteFavoriteResponse> DeleteFavoriteAsync(DeleteFavoriteRequest request, DeleteFavoriteResponse response)
+        {
+            try
+            {
+                response = await _weatherDataLayer.DeleteFavoriteAsync(request, response).ConfigureAwait(false);
+                if (!response.IsSuccess)
+                {
+                    response.Failed("WeatherWorkflow:DeleteFavoriteAsync");
+                }
+            }
+            catch (Exception ex) { response.Failed(ex); }
+            return response;
+        }
     }
 }

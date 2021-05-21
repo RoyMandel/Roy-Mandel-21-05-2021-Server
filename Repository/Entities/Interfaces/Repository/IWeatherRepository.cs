@@ -12,5 +12,7 @@ namespace Repository.Entities.Interfaces.Repository
         Task<PlaceTemperature> GetPlaceTemperatureAsync(string CityKey);
         Task<List<Conditions>> GetCurrentConditionsAsync(string CityKey);
         Task<PlaceTemperatureAndData> InsertPlaceWeatherAndData(string cityKey, string weatherText, decimal temperature, string placeName);
+        Task<Favorites> AddPlaceToFavorites(string cityKey);
+        Task<bool> DeleteFromFavorites(string cityKey);
     }
 }
