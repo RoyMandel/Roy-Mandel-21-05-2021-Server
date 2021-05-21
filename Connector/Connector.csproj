@@ -10,6 +10,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\APIEntities\APIEntities.csproj" />
+    <ProjectReference Include="..\Framework\Framework.csproj" />
     <ProjectReference Include="..\Repository\Repository.csproj" />
   </ItemGroup>
 
