@@ -35,13 +35,12 @@ namespace AccuWeatherAPI
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
             var mappingConfig = new MapperConfiguration(mc =>
             {
-                mc.AddProfile(new MappingProfile());
+                mc.AddProfile(new Connector.MappingProfile());
             });
 
             IMapper mapper = mappingConfig.CreateMapper();
             services.AddSingleton(mapper);
-            services.AddAutoMapper(typeof(AccuWeatherAPI.Startup));
-
+            
             services.AddSwaggerGen(c => c.SwaggerDoc(name: "v1", new Microsoft.OpenApi.Models.OpenApiInfo { Title = "Realcommerce Swagger", Version = "v1" }));
 
             var config = new MapperConfiguration(cfg =>
@@ -49,6 +48,8 @@ namespace AccuWeatherAPI
                 cfg.AllowNullCollections = true;
                 cfg.AllowNullDestinationValues = true;
             });
+
+            services.AddAutoMapper(typeof(AccuWeatherAPI.Startup));
 
             #region DI and mappings
 
@@ -96,7 +97,6 @@ namespace AccuWeatherAPI
             app.UseSwaggerUI(c =>
             {
                 c.SwaggerEndpoint("v1/swagger.json", "Realcommerce V1");
-
             });
 
             app.UseHttpsRedirection();

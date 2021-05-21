@@ -7,5 +7,6 @@ namespace APIEntities.AccuWeather.Models.Interfaces.Connector
     public interface IWeatherConnector
     {
         Task<SearchResponse> SearchAsync(SearchRequest request, SearchResponse response);
+        Task<GetCurrentWeatherResponse> GetCurrentWeatherAsync(GetCurrentWeatherRequest request, GetCurrentWeatherResponse response);
     }
 }

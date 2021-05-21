@@ -3,6 +3,6 @@
     public class AdministrativeAreaData
     {
         public string ID { get; set; }
-        public int LocalizedName { get; set; }
+        public string LocalizedName { get; set; }
     }
 }

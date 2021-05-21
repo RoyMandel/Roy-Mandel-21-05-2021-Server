@@ -41,5 +41,29 @@ namespace AccuWeatherAPI.Controllers
             }
             return response;
         }
+
+        [Route("GetCurrentWeather")]
+        [HttpGet]
+        public async Task<GetCurrentWeatherResponse> GetCurrentWeatherAsync([FromQuery] GetCurrentWeatherRequest request)
+        {
+            var response = new GetCurrentWeatherResponse();
+            try
+            {
+                response = await _weatherWorkflow.GetCurrentWeatherAsync(request, response).ConfigureAwait(false);
+                if (response.IsSuccess)
+                {
+                    response.Success("GetCurrentWeatherAsync");
+                }
+                else
+                {
+                    response.Failed("WeatherController:GetCurrentWeatherAsync");
+                }
+            }
+            catch (Exception ex)
+            {
+                response.Failed(ex);
+            }
+            return response;
+        }
     }
 }
