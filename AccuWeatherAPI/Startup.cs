@@ -1,22 +1,16 @@
-﻿using AutoMapper;
+﻿using APIEntities.AccuWeather.Models.Interfaces.Connector;
+using APIFlow.DataLayer;
+using APIFlow.Entities.Interfaces.DataLayer;
+using APIFlow.Entities.Interfaces.Workflow;
+using APIFlow.Workflow;
+using AutoMapper;
+using Connector;
+using Framework.Entities.Configurations;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Connector;
-using APIEntities.AccuWeather.Models.Interfaces.Connector;
-using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using APIFlow.Entities.Interfaces.Workflow;
-using APIFlow.Workflow;
-using APIFlow.DataLayer;
-using APIFlow.Entities.Interfaces.DataLayer;
 
 namespace AccuWeatherAPI
 {
@@ -43,12 +37,6 @@ namespace AccuWeatherAPI
             
             services.AddSwaggerGen(c => c.SwaggerDoc(name: "v1", new Microsoft.OpenApi.Models.OpenApiInfo { Title = "Realcommerce Swagger", Version = "v1" }));
 
-            var config = new MapperConfiguration(cfg =>
-            {
-                cfg.AllowNullCollections = true;
-                cfg.AllowNullDestinationValues = true;
-            });
-
             services.AddAutoMapper(typeof(AccuWeatherAPI.Startup));
 
             #region DI and mappings
@@ -65,12 +53,12 @@ namespace AccuWeatherAPI
 
             #region Register key params from appsettings.json
 
-            services.Configure<Repository.Entities.Configuration.AuthDBConnectionOptions>(options =>
+            services.Configure<DBConnectionOptions>(options =>
             {
                 options.WhatherConnectionString = Configuration.GetSection("WeatherDB:ConnectionString").Value;
             });
 
-            services.Configure<Repository.Entities.Configuration.AuthAccuWeatherOptions>(options =>
+            services.Configure<AccuWeatherOptions>(options =>
             {
                 options.ApiKey = Configuration.GetSection("AccuWeatherAPI:ApiKey").Value;
                 options.AutocompleteUrl = Configuration.GetSection("AccuWeatherAPI:AutocompleteUrl").Value;

@@ -19,7 +19,6 @@ namespace Repository.Repository
 {
     public class WeatherRepository : BaseRepository, IWeatherRepository
     {
-        readonly IDbConnection _dbWeather = new SqlConnection("Server=localhost\\SQLEXPRESS;Database=RealcommerceDB;Trusted_Connection=True;MultipleActiveResultSets=True;");
         public WeatherRepository(IOptions<DBConnectionOptions> dbSettings, IOptions<AccuWeatherOptions> accuWeatherOptions)
             : base(dbSettings, accuWeatherOptions)
         {
@@ -30,15 +29,12 @@ namespace Repository.Repository
         {
             try
             {
-                //_apiKey = "8Yx9iripGXpcJFNlJlEf9fY8Hv8RP9A4";
-                //_autocompleteUrl = "http://dataservice.accuweather.com/locations/v1/cities/autocomplete?apikey={ApiKey}&q={param}";
-                //HttpClient client = new HttpClient();
-                //string url = _autocompleteUrl.
-                //              Replace("{ApiKey}", _apiKey).
-                //              Replace("{param}", searchParam);
-                //var serviceResponse = await client.GetAsync(url).ConfigureAwait(false);
-                //string apiResponse = await serviceResponse.Content.ReadAsStringAsync().ConfigureAwait(false);
-                string apiResponse = "[{'Version':1,'Key':'212476','Type':'City','Rank':45,'LocalizedName':'Rishon LeZiyyon','Country':{'ID':'IL','LocalizedName':'Israel'},'AdministrativeArea':{'ID':'M','LocalizedName':'Central District'}}]";
+                HttpClient client = new HttpClient();
+                string url = _autocompleteUrl.
+                              Replace("{ApiKey}", _apiKey).
+                              Replace("{param}", searchParam);
+                var serviceResponse = await client.GetAsync(url).ConfigureAwait(false);
+                string apiResponse = await serviceResponse.Content.ReadAsStringAsync().ConfigureAwait(false);
                 var response = JsonConvert.DeserializeObject<List<Place>>(apiResponse);
                 return response;
             }
@@ -81,15 +77,12 @@ namespace Repository.Repository
         {
             try
             {
-                //_apiKey = "8Yx9iripGXpcJFNlJlEf9fY8Hv8RP9A4";
-                //_currentConditionsUrl = "http://dataservice.accuweather.com/currentconditions/v1/{LocationID}?apikey={ApiKey}";
-                //HttpClient client = new HttpClient();
-                //string url = _currentConditionsUrl.
-                //              Replace("{ApiKey}", _apiKey).
-                //              Replace("{LocationID}", cityKey);
-                //var serviceResponse = await client.GetAsync(url).ConfigureAwait(false);
-                //string apiResponse = await serviceResponse.Content.ReadAsStringAsync().ConfigureAwait(false);
-                string apiResponse = @"[{'LocalObservationDateTime':'2021-05-21T22:26:00+03:00','EpochTime':1621625160,'WeatherText':'Mostly clear','WeatherIcon':34,'HasPrecipitation':false,'PrecipitationType':null,'IsDayTime':false,'Temperature':{'Metric':{'Value':22.6,'Unit':'C','UnitType':17},'Imperial':{'Value':73.0,'Unit':'F','UnitType':18}},'MobileLink':'http://m.accuweather.com/en/il/rishon-leziyyon/212476/current-weather/212476?lang=en-us','Link':'http://www.accuweather.com/en/il/rishon-leziyyon/212476/current-weather/212476?lang=en-us'}]";
+                HttpClient client = new HttpClient();
+                string url = _currentConditionsUrl.
+                              Replace("{ApiKey}", _apiKey).
+                              Replace("{LocationID}", cityKey);
+                var serviceResponse = await client.GetAsync(url).ConfigureAwait(false);
+                string apiResponse = await serviceResponse.Content.ReadAsStringAsync().ConfigureAwait(false);
                 var response = JsonConvert.DeserializeObject<List<Conditions>>(apiResponse);
                 return response;
             }
